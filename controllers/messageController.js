@@ -58,4 +58,12 @@ const createMessage = [
   },
 ];
 
-export { createMessage, renderNewMessageForm };
+// @desc Render index
+// @route GET /
+
+const renderIndex = async (req, res, next) => {
+  const allMessages = await message.getAllMessages();
+  res.render("index", { title: "Homepage", messages: allMessages });
+};
+
+export { createMessage, renderNewMessageForm, renderIndex };

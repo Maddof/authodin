@@ -1,13 +1,22 @@
 <header>
   <div class="header-wrap">
     <h1>Mini Message Board</h1>
-    <ul class="nav_main">
-      <li>
-        <a href="/">Home</a>
-        <a href="/sign-up">Sign up</a>
-        <a href="/newmessage">New message</a>
-        <a href="#">Link</a>
-      </li>
-    </ul>
+    <div class="header-row-one">
+      <ul class="nav_main">
+        <li>
+          <a href="/">Home</a>
+          <a href="/sign-up">Sign up</a>
+          <a href="/newmessage">New message</a>
+          <a href="#">Link</a>
+        </li>
+      </ul>
+      <div>
+        <% if (currentUser) {%>
+        <i><%= currentUser.username %> </i>| <a href="/log-out">LOG OUT</a>
+        <% } else { %>
+        <a href="/login">Login</a>
+        <% } %>
+      </div>
+    </div>
   </div>
 </header>

@@ -1,22 +1,23 @@
 <% if (currentUser) {%>
-<h1>WELCOME BACK <%= currentUser.username %></h1>
-<a href="/log-out">LOG OUT</a>
-<% } else { %>
-<h1>please log in</h1>
-<form action="/log-in" method="POST">
-  <label for="username">Username</label>
-  <input id="username" name="username" placeholder="username" type="text" />
-  <label for="password">Password</label>
-  <input id="password" name="password" type="password" />
-  <button>Log In</button>
-</form>
-<%}%>
 
-<!-- Display error message if present -->
-<% if (messages && messages.length > 0) { %>
-<ul class="mb-0">
+<ul class="messages-list">
   <% messages.forEach((message) => { %>
-  <li><%= message %></li>
-  <% }) %>
+  <li>
+    <div class="message">
+      <div>
+        <h2><%= message.title %></h2>
+        Published <%= (currentUser.s_member) ? message.date : 'Unknown' %> | By
+        <%= (currentUser.s_member) ? message.username : 'Anonymous' %>
+      </div>
+      <p><%= message.content %></p>
+      <br />
+    </div>
+  </li>
+  <%}) %>
 </ul>
+<% } else { %>
+<h1>Home</h1>
+<p>Nothing to see here</p>
+<p>Please login or sign up to view all messages</p>
+
 <% } %>

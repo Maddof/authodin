@@ -7,9 +7,11 @@ body {
   flex-direction: column;
   justify-content: center;
   height: 90svh;
-  width: 800px;
+  max-width: 700px;
   margin-inline: auto;
   padding: 2rem;
+  line-height: 1.4;
+  font-size: 1.1rem;
 }
 
 a {
@@ -52,6 +54,11 @@ button:hover {
   padding: 1rem;
 }
 
+.header-row-one {
+  display: flex;
+  justify-content: space-between;
+}
+
 .nav_main {
   list-style-type: none;
   display: flex;
@@ -66,8 +73,21 @@ button:hover {
   max-width: 360px;
 }
 
+.messages-list {
+  padding: 0;
+}
+
 .messages-list li {
+  list-style: none;
   margin-bottom: 0.5em;
+  border: 2px solid #686b8b;
+  border-radius: 8px;
+  padding: 1em;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
 }
 
 .search-result__wrapper {

@@ -16,4 +16,12 @@ const insertUser = async (username, password) => {
   }
 };
 
+// const checkSecretPassword = async(inputPass) => {
+//   const query = ``
+// }
+
+// const checkSecretMember = async (username) => {
+//   const query = `SELECT `
+// }
+
 export { checkUniqueUser, insertUser };

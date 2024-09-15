@@ -1,0 +1,22 @@
+<% if (currentUser) {%>
+<h1>WELCOME <%= currentUser.username %></h1>
+<a href="/log-out">LOG OUT</a>
+<% } else { %>
+<h1>please log in</h1>
+<form action="/log-in" method="POST">
+  <label for="username">Username</label>
+  <input id="username" name="username" placeholder="username" type="text" />
+  <label for="password">Password</label>
+  <input id="password" name="password" type="password" />
+  <button>Log In</button>
+</form>
+<%}%>
+
+<!-- Display error message if present -->
+<% if (messages && messages.length > 0) { %>
+<ul class="mb-0">
+  <% messages.forEach((message) => { %>
+  <li><%= message %></li>
+  <% }) %>
+</ul>
+<% } %>

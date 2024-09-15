@@ -1,0 +1,25 @@
+<h1>Your dashboard</h1>
+
+<p>
+  A man wanted to enter an exclusive club but did not know the password that was
+  required. He waited by the door and listened. A club member knocked on the
+  door and the doorman said, "twelve." The member replied, "six " and was let
+  in. A second member came to the door and the doorman said, "six." The member
+  replied, "three" and was let in. The man thought he had heard enough and
+  walked up to the door. The doorman said ,"ten" and the man replied, "five."
+  But he was not let in. What should he have said?
+</p>
+<form action="/secretmember" method="post">
+  <label for="secretq">Secret:</label>
+  <input type="text" name="secretq" id="secretq" />
+  <button type="submit">Enter</button>
+</form>
+
+<!-- Display error message if present -->
+<% if (errors && errors.length > 0) { %>
+<ul class="mb-0">
+  <% errors.forEach((error) => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>

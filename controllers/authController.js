@@ -2,13 +2,20 @@ import passport from "passport";
 import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 import { checkUniqueUser, insertUser } from "../db/queries.js";
-import { validateUserSignUp } from "./validations.js";
+import { validateUserSignUp, validateSecret } from "./validations.js";
 
-// @desc Render index
-// @route GET /
+// @desc Render login page
+// @route GET /login
 
-const renderIndex = (req, res, next) => {
-  res.render("index", { title: "Homepage" });
+const renderLogin = (req, res, next) => {
+  res.render("login", { title: "Login" });
+};
+
+// @desc Render dashboard
+// @route GET /dashboard
+
+const renderDashboard = (req, res, next) => {
+  res.render("dashboard", { title: "Dashboard", errors: null });
 };
 
 // @desc Render sign up-form
@@ -46,12 +53,36 @@ const validateSignUp = [
       await insertUser(req.body.username, hashedPassword);
 
       // Redirect after successful signup
-      res.redirect("/");
+      res.redirect("/dashboard");
     } catch (err) {
       console.error("Signup Error:", err.message); // Log the error
       return res.render("sign-up", {
         title: "Sign up error",
         errors: [{ msg: "Error occured during signup" }],
+      });
+    }
+  },
+];
+
+const enableSecretMemberStatus = [
+  validateSecret,
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    try {
+      if (!errors.isEmpty()) {
+        return res.status(400).render("dashboard", {
+          title: "Error",
+          errors: errors.array(),
+        });
+      }
+      console.log("Succes secret password for club");
+      // Update the user's membership status here if needed
+      res.redirect("/dashboard");
+    } catch (error) {
+      console.error("Error processing secret password:", error.message);
+      return res.render("dashboard", {
+        title: "Secret Q error",
+        errors: [{ msg: "Error occured during secret validation" }],
       });
     }
   },
@@ -66,7 +97,7 @@ const validateLogin = (req, res, next) => {
     }
     if (!user) {
       // If authentication fails, render the login page with the error message
-      return res.render("index", {
+      return res.render("login", {
         title: "Login",
         messages: [info.message], // Capture the error message from Passport
       });
@@ -75,18 +106,10 @@ const validateLogin = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      return res.redirect("/"); // On successful login, redirect to the homepage
+      return res.redirect("/dashboard"); // On successful login, redirect to the dashbaord
     });
   })(req, res, next);
 };
-
-// const validateLogin = (req, res, next) => {
-//   passport.authenticate("local", {
-//     successRedirect: "/",
-//     failureRedirect: "/",
-//     failureMessage: true,
-//   })(req, res, next);
-// };
 
 // @desc Logout user and redirect to index
 // @route GET /
@@ -100,9 +123,11 @@ const validateLogout = (req, res, next) => {
 };
 
 export {
-  renderIndex,
+  renderLogin,
   renderSignUp,
+  renderDashboard,
   validateSignUp,
   validateLogin,
   validateLogout,
+  enableSecretMemberStatus,
 };

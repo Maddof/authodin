@@ -30,4 +30,13 @@ const validateUserSignUp = [
     .withMessage("Passwords do not match"),
 ];
 
-export { validateUserSignUp };
+const validateSecret = [
+  body("secretq")
+    .notEmpty()
+    .withMessage("Please enter a value")
+    .custom((value) => value.toLowerCase() === "three")
+    .withMessage("Not equal to secret")
+    .escape(),
+];
+
+export { validateUserSignUp, validateSecret };
