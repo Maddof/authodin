@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  renderIndex,
   renderSignUp,
   validateSignUp,
   validateLogin,
@@ -12,6 +13,8 @@ authRouter.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
+
+authRouter.get("/", renderIndex);
 
 authRouter.get("/sign-up", renderSignUp);
 

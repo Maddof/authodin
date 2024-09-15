@@ -2,13 +2,18 @@
 
 import express from "express";
 import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
 import { fileURLToPath } from "url";
 import path from "path";
 import expressEjsLayouts from "express-ejs-layouts";
 import passport from "./config/passport.js"; // Import Passport configuration
 import { authRouter } from "./routes/authRoutes.js";
+import pool from "./config/database.js";
+import { catch404, errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
+// Initialize pgSession by passing express-session
+const pGSession = connectPgSimple(session);
 
 // Get directory & file names using ES module compatible methods
 const __filename = fileURLToPath(import.meta.url); // Correct way to get __filename
@@ -28,14 +33,37 @@ app.set("views", path.join(__dirname, "views"));
 
 // END EJS VIEW TEMPLATE SETUP
 
-app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new pGSession({
+      pool: pool,
+      tableName: "user_sessions",
+      createTableIfMissing: true,
+    }),
+    cookie: {
+      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      httpOnly: true, // Prevent client-side JS from accessing the cookie
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    },
+  })
+);
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
+app.use((req, res, next) => {
+  res.locals.messages = req.session.messages || [];
+  delete req.session.messages; // Clear messages after they've been rendered
+  next();
+});
+
 app.use(authRouter);
 
-app.get("/", (req, res) => {
-  res.render("index", { title: "Homepage" });
-});
+// ERROR HANDLER
+// Catch 404 and forward to the error handler
+app.use(catch404);
+app.use(errorHandler);
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

@@ -8,15 +8,13 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <div id="main">
-      <%- include('layouts/header'); -%>
-      <main id="site_content">
-        <div id="content">
-          <!-- insert the page content here -->
-          <%- body %>
-        </div>
-      </main>
-      <%- include('layouts/footer'); -%>
-    </div>
+    <%- include('layouts/header'); -%>
+    <main id="main-wrapper">
+      <div id="content">
+        <!-- insert the page content here -->
+        <%- body %>
+      </div>
+    </main>
+    <%- include('layouts/footer'); -%>
   </body>
 </html>

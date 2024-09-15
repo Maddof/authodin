@@ -11,3 +11,12 @@
   <button>Log In</button>
 </form>
 <%}%>
+
+<!-- Display error message if present -->
+<% if (messages && messages.length > 0) { %>
+<ul class="mb-0">
+  <% messages.forEach((message) => { %>
+  <li><%= message %></li>
+  <% }) %>
+</ul>
+<% } %>
