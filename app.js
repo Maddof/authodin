@@ -8,6 +8,7 @@ import path from "path";
 import expressEjsLayouts from "express-ejs-layouts";
 import passport from "./config/passport.js"; // Import Passport configuration
 import { authRouter } from "./routes/authRoutes.js";
+import { messageRouter } from "./routes/messageRoutes.js";
 import pool from "./config/database.js";
 import { catch404, errorHandler } from "./middleware/errorHandler.js";
 
@@ -60,6 +61,7 @@ app.use((req, res, next) => {
 });
 
 app.use(authRouter);
+app.use(messageRouter);
 
 // ERROR HANDLER
 // Catch 404 and forward to the error handler
