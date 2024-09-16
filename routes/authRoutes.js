@@ -7,6 +7,7 @@ import {
   validateLogin,
   validateLogout,
   enableSecretMemberStatus,
+  disableSecretMemberStatus,
 } from "../controllers/authController.js";
 
 const authRouter = express.Router();
@@ -27,6 +28,8 @@ authRouter.post("/sign-up", validateSignUp);
 authRouter.post("/log-in", validateLogin);
 
 authRouter.post("/secretmember", enableSecretMemberStatus);
+
+authRouter.get("/exitsecretclub", disableSecretMemberStatus);
 
 authRouter.get("/log-out", validateLogout);
 

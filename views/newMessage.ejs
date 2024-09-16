@@ -1,3 +1,9 @@
+<% if (!currentUser) { %>
+
+<p>Please login to post a message</p>
+
+<% }else { %>
+
 <form action="/newmessage" method="POST" class="add-new-post-form">
   <label for="title">Title: </label>
   <input name="title" id="title" />
@@ -7,11 +13,4 @@
   <button type="submit">Add post</button>
 </form>
 
-<!-- Display error message if present -->
-<% if (errors && errors.length > 0) { %>
-<ul class="mb-0">
-  <% errors.forEach((error) => { %>
-  <li><%= error.msg %></li>
-  <% }) %>
-</ul>
-<% } %>
+<%- include("partials/errors.ejs") %> <% } %>

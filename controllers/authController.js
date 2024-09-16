@@ -1,14 +1,19 @@
 import passport from "passport";
 import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
-import { checkUniqueUser, insertUser } from "../db/queries.js";
+import {
+  checkUniqueUser,
+  insertUser,
+  enableSecretStatus,
+  disableSecretStatus,
+} from "../db/queries.js";
 import { validateUserSignUp, validateSecret } from "./validations.js";
 
 // @desc Render login page
 // @route GET /login
 
 const renderLogin = (req, res, next) => {
-  res.render("login", { title: "Login" });
+  res.render("login", { title: "Login", errors: null });
 };
 
 // @desc Render dashboard
@@ -77,7 +82,8 @@ const enableSecretMemberStatus = [
       }
       console.log("Succes secret password for club");
       // Update the user's membership status here if needed
-      res.redirect("/dashboard");
+      await enableSecretStatus(req.user.id);
+      return res.redirect("/dashboard");
     } catch (error) {
       console.error("Error processing secret password:", error.message);
       return res.render("dashboard", {
@@ -87,6 +93,20 @@ const enableSecretMemberStatus = [
     }
   },
 ];
+
+const disableSecretMemberStatus = async (req, res, next) => {
+  try {
+    // console.log(req.user.id);
+    await disableSecretStatus(req.user.id);
+    return res.redirect("/dashboard");
+  } catch (error) {
+    console.error("Error disabling secret status", error);
+    return res.render("dashboard", {
+      title: "Secret Q error",
+      errors: [{ msg: "Error occured during secret disabling" }],
+    });
+  }
+};
 
 // @desc Login user and redirect based on state
 // @route POST /log-in
@@ -130,4 +150,5 @@ export {
   validateLogin,
   validateLogout,
   enableSecretMemberStatus,
+  disableSecretMemberStatus,
 };

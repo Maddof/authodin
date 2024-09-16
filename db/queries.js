@@ -16,6 +16,26 @@ const insertUser = async (username, password) => {
   }
 };
 
+const enableSecretStatus = async (userid) => {
+  const query = `UPDATE users SET s_member = true WHERE id = $1`;
+  try {
+    const result = await pool.query(query, [userid]);
+    return result.rows[0];
+  } catch (error) {
+    console.log("Error enabling secret status: ", error);
+  }
+};
+
+const disableSecretStatus = async (userid) => {
+  const query = `UPDATE users SET s_member = false WHERE id = $1`;
+  try {
+    const result = await pool.query(query, [userid]);
+    return result.rows[0];
+  } catch (error) {
+    console.log("Error disabling secret status: ", error);
+  }
+};
+
 // const checkSecretPassword = async(inputPass) => {
 //   const query = ``
 // }
@@ -24,4 +44,4 @@ const insertUser = async (username, password) => {
 //   const query = `SELECT `
 // }
 
-export { checkUniqueUser, insertUser };
+export { checkUniqueUser, insertUser, enableSecretStatus, disableSecretStatus };

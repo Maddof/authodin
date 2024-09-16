@@ -1,5 +1,5 @@
 <h1>Your dashboard</h1>
-
+<% if (currentUser) { %> <% if (currentUser.s_member === false) { %>
 <p>
   A man wanted to enter an exclusive club but did not know the password that was
   required. He waited by the door and listened. A club member knocked on the
@@ -9,17 +9,20 @@
   walked up to the door. The doorman said ,"ten" and the man replied, "five."
   But he was not let in. What should he have said?
 </p>
+
 <form action="/secretmember" method="post">
   <label for="secretq">Secret:</label>
   <input type="text" name="secretq" id="secretq" />
   <button type="submit">Enter</button>
 </form>
 
-<!-- Display error message if present -->
-<% if (errors && errors.length > 0) { %>
-<ul class="mb-0">
-  <% errors.forEach((error) => { %>
-  <li><%= error.msg %></li>
-  <% }) %>
-</ul>
+<% } else { %>
+
+<p>Welcome to the secret club. You may now read all messages.</p>
+<p>Do you wish to exit?</p>
+<p><a href="/exitsecretclub">Yes, terminate my secret status</a></p>
+<% } %> <%- include("partials/errors.ejs") %> <% } else { %>
+
+<p>You need to be logged in to view the dashbaord</p>
+
 <% } %>
