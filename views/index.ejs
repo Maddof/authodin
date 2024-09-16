@@ -2,7 +2,7 @@
 
 <ul class="messages-list">
   <% messages.forEach((message) => { %>
-  <li>
+  <li id="msg-<%= message.msg_id %>">
     <div class="message">
       <div>
         <h2><%= message.title %></h2>
@@ -11,6 +11,16 @@
       </div>
       <p><%= message.content %></p>
       <br />
+      <div class="admin-msg-wrap">
+        <button value="<%= message.msg_id %>" class="admin-del-btn" 
+          <%= currentUser.admin ? '' : "disabled" %>>
+          DEL
+        </button>
+        <% if(!currentUser.admin) { %>
+          <p style="font-size: small; max-width: 60px; margin: 0.25em 0">Adm only</p>
+          <% } %>
+        </p>
+      </div>
     </div>
   </li>
   <%}) %>
@@ -21,3 +31,41 @@
 <p>Please login or sign up to view all messages</p>
 
 <% } %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const deleteButtons = document.querySelectorAll('.admin-del-btn');
+
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const msgId = button.value;
+
+        const currentItem = document.querySelector(`#msg-${msgId}`);
+
+        console.log("Current item: " + currentItem);
+
+        const confirmation = confirm('Are you sure you want to delete this message?');
+        if (confirmation) {
+          try {
+            const response = await fetch(`/messages/${msgId}`, {
+              method: 'DELETE',
+            });
+
+            if (response.ok) {
+              // Remove the message from the DOM
+              const currentItem = document.querySelector(`#msg-${msgId}`);
+              currentItem.remove();
+
+            } else {
+              alert('Failed to delete message');
+            }
+          } catch (error) {
+            console.error('Error:', error);
+            alert('Something went wrong.');
+          }
+        }
+      });
+    });
+  });
+</script>

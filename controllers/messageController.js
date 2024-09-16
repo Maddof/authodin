@@ -58,6 +58,24 @@ const createMessage = [
   },
 ];
 
+const deleteMessage = async (req, res, next) => {
+  const messageId = req.params.id;
+
+  try {
+    // Delete the message with the given ID
+    const result = message.deleteMessage(messageId);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Message not found" });
+    }
+
+    res.status(200).json({ message: "Message deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting message:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 // @desc Render index
 // @route GET /
 
@@ -66,4 +84,4 @@ const renderIndex = async (req, res, next) => {
   res.render("index", { title: "Homepage", messages: allMessages });
 };
 
-export { createMessage, renderNewMessageForm, renderIndex };
+export { createMessage, deleteMessage, renderNewMessageForm, renderIndex };

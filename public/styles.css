@@ -42,11 +42,18 @@ button {
   border: none;
   padding: 0.5em 1em;
   transition-duration: 200ms;
+  cursor: pointer;
+}
+
+button[disabled] {
+  cursor: not-allowed;
 }
 
 button:hover {
-  cursor: pointer;
   background-color: rgb(38, 100, 80);
+}
+button[disabled]:hover {
+  background-color: none;
 }
 
 #main-wrapper {
@@ -88,6 +95,17 @@ button:hover {
 .message {
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.message h2 {
+  margin: 0;
+}
+
+.admin-msg-wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .search-result__wrapper {

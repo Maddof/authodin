@@ -9,6 +9,8 @@ import {
   enableSecretMemberStatus,
   disableSecretMemberStatus,
 } from "../controllers/authController.js";
+import { deleteMessage } from "../controllers/messageController.js";
+import { ensureAdmin } from "../middleware/authMiddleware.js";
 
 const authRouter = express.Router();
 
@@ -16,6 +18,8 @@ authRouter.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
+
+authRouter.delete("/messages/:id", ensureAdmin, deleteMessage);
 
 authRouter.get("/login", renderLogin);
 

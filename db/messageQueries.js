@@ -9,9 +9,23 @@ const message = {
   },
   async getAllMessages() {
     const { rows } = await pool.query(`
-      SELECT title, content, TO_CHAR(timestamp, 'YYYY-MM-DD') as date, username FROM messages
-      JOIN users ON users.id = messages.user_id
+      SELECT  messages.id AS msg_id, 
+              messages.title,
+              messages.content,
+              users.username,
+              TO_CHAR(messages.timestamp, 'YYYY-MM-DD') AS date
+                FROM messages
+                JOIN users ON users.id = messages.user_id
+                ORDER BY messages.timestamp DESC;
       `);
+    return rows;
+  },
+
+  async deleteMessage(msgid) {
+    const query = `
+                  DELETE FROM messages WHERE id = $1 RETURNING *
+    `;
+    const { rows } = await pool.query(query, [msgid]);
     return rows;
   },
 };
