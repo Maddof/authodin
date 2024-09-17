@@ -6,7 +6,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 90svh;
   max-width: 700px;
   margin-inline: auto;
   padding: 2rem;
@@ -57,8 +56,11 @@ button[disabled]:hover {
 }
 
 #main-wrapper {
-  min-height: 340px;
   padding: 1rem;
+}
+
+#content {
+  min-height: 340px;
 }
 
 .header-row-one {
