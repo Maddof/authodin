@@ -20,6 +20,14 @@ const renderNewMessageForm = (req, res, next) => {
   res.render("newMessage", { title: "New message", errors: null });
 };
 
+// @desc Render index
+// @route GET /
+
+const renderIndex = async (req, res, next) => {
+  const allMessages = await message.getAllMessages();
+  res.render("index", { title: "Homepage", messages: allMessages });
+};
+
 const createMessage = [
   validateMessage,
   async (req, res, next) => {
@@ -74,14 +82,6 @@ const deleteMessage = async (req, res, next) => {
     console.error("Error deleting message:", error);
     res.status(500).json({ error: "Internal server error" });
   }
-};
-
-// @desc Render index
-// @route GET /
-
-const renderIndex = async (req, res, next) => {
-  const allMessages = await message.getAllMessages();
-  res.render("index", { title: "Homepage", messages: allMessages });
 };
 
 export { createMessage, deleteMessage, renderNewMessageForm, renderIndex };
